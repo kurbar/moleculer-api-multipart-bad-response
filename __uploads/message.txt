@@ -1,0 +1,65 @@
+declare namespace Express {
+  interface Response {
+    created(data?: object, headers?: Headers): Response;
+    noContent(headers?: Headers): Response;
+    errorBadRequest(message: string, headers?: Headers): Response;
+    errorUnauthorized(message: string, headers?: Headers): Response;
+    errorForbidden(message: string, headers?: Headers): Response;
+    errorNotFound(message: string, headers?: Headers): Response;
+    errorConflict(message: string, headers?: Headers): Response;
+    errorUnsupportedMediaType(message: string, headers?: Headers): Response;
+    errorValidation(message: string, errors: Array<object>, headers?: Headers): Response;
+    errorInternal(message: string, headers?: Headers): Response;
+  }
+}
+
+import { Errors } from 'moleculer';
+import express = require('express');
+
+declare namespace e {
+  class HttpBadRequestError extends Errors.MoleculerError {
+    constructor(message: string);
+  }
+  
+  class HttpUnauthorizedError extends Errors.MoleculerError {
+    constructor(message: string, type: string);
+  }
+  
+  class HttpForbiddenError extends Errors.MoleculerError {
+    constructor(message: string);
+  }
+  
+  class HttpNotFoundError extends Errors.MoleculerError {
+    constructor(message: string);
+  }
+  
+  class HttpConflictError extends Errors.MoleculerError {
+    constructor(message: string);
+  }
+  
+  class HttpUnsupportedMediaTypeError extends Errors.MoleculerError {
+    constructor(message: string);
+  }
+  
+  class HttpValidationError extends Errors.MoleculerError {
+    constructor(message: string, errors: Array<object>);
+  }
+  
+  class HttpInternalServerError extends Errors.MoleculerError {
+    constructor(message: string);
+  }
+
+  export interface ResponseErrors {
+    HttpBadRequestError: HttpBadRequestError;
+    HttpUnauthorizedError: HttpUnauthorizedError;
+    HttpForbiddenError: HttpForbiddenError;
+    HttpNotFoundError: HttpNotFoundError;
+    HttpConflictError: HttpConflictError;
+    HttpUnsupportedMediaTypeError: HttpUnsupportedMediaTypeError;
+    HttpValidationError: HttpValidationError;
+    HttpInternalServerError: HttpInternalServerError;
+  }
+}
+
+declare function e(): express.RequestHandler;
+export = e;
